@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Profile — SCrSMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../SideBar/studentSideBar.css">
+  <link rel="stylesheet" href="studentProfile.css">
+</head>
+<body>
+  <div class="app">
+    <div id="sidebar-container"></div>
+
+    <main class="main">
+      <header class="page-header profile-header">
+        <div>
+          <h1>My Profile</h1>
+          <p class="muted">Manage your personal information</p>
+        </div>
+      </header>
+
+      <section class="profile-section">
+        <div class="card info-card">
+          <div class="card-head"><span class="icon">🛡️</span><strong>Account Information</strong>
+            <div class="hint muted">These fields are managed by the administration</div>
+          </div>
+          <div class="card-body two-col">
+            <div>
+              <label>Full Name</label>
+              <div class="value" id="fullName">Not set</div>
+            </div>
+            <div>
+              <label>Student ID</label>
+              <div class="value" id="studentId">Not set</div>
+            </div>
+            <div>
+              <label>Program</label>
+              <div class="value" id="program">Not set</div>
+            </div>
+            <div>
+              <label>Year Level</label>
+              <div class="value" id="yearLevel">Not set</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card info-card">
+          <div class="card-head"><span class="icon">📞</span><strong>Contact Information</strong>
+            <div class="hint muted">You can update these fields</div>
+          </div>
+          <div class="card-body two-col">
+            <div>
+              <label>Contact Number</label>
+              <div class="value" id="contactNumber">Not set</div>
+            </div>
+            <div>
+              <label>Barangay</label>
+              <div class="value" id="barangay">Not set</div>
+            </div>
+            <div style="grid-column:1 / -1">
+              <label>Complete Address</label>
+              <div class="value" id="address">Not set</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card info-card warning">
+          <div class="card-head"><span class="icon">⚠️</span><strong>Emergency Contact</strong>
+            <div class="hint muted">Person to contact in case of emergency</div>
+          </div>
+          <div class="card-body two-col">
+            <div>
+              <label>Contact Name</label>
+              <div class="value" id="emName">Not set</div>
+            </div>
+            <div>
+              <label>Contact Number</label>
+              <div class="value" id="emNumber">Not set</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card large-card">
+          <div class="center">
+            <div class="avatar-large">👤</div>
+            <h3>Complete Your Profile</h3>
+            <p class="muted">Set up your profile to use the system</p>
+            <div style="margin-top:12px"><a class="primary btn" href="../StudentProfile/studentProfile.html">Set Up Profile</a></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // load sidebar (same approach as dashboard)
+    fetch('../LogInSignUp/Dashboard/studentSideBar.html')
+      .then(r => r.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const sidebar = doc.querySelector('aside.sidebar');
+        if (sidebar) document.getElementById('sidebar-container').appendChild(sidebar);
+      })
+      .catch(()=>{});
+
+    // populate profile values from localStorage (placeholder until backend)
+    (function(){
+      const stored = (localStorage.getItem('SCRaSMS_user') && JSON.parse(localStorage.getItem('SCRaSMS_user'))) || {};
+      // mapping of keys to elements
+      const map = {
+        fullName: stored.fullName || stored.name || '',
+        studentId: stored.studentId || stored.id || '',
+        program: stored.program || '',
+        yearLevel: stored.yearLevel || '',
+        contactNumber: stored.contactNumber || stored.phone || '',
+        barangay: stored.barangay || '',
+        address: stored.address || '',
+        emName: stored.emName || '',
+        emNumber: stored.emNumber || ''
+      };
+      for(const k in map){
+        const el = document.getElementById(k);
+        if(el) el.textContent = map[k] || 'Not set';
+      }
+    })();
+  </script>
+</body>
+</html>

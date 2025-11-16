@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sidebar</title>
+  <link rel="stylesheet" href="studentSideBar.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">Student Calamity Response and Status Mapping System [SCRaSMS]</div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+    </div>
+
+    <nav class="nav" id="sidebarNav">
+      <a class="nav-item active" data-load="Dashboard/studentDashboard.html">
+        <span class="icon">🏠</span>
+        <span class="label">Dashboard</span>
+      </a>
+
+      <a class="nav-item" data-load="StudentProfile/studentProfile.html">
+        <span class="icon">👤</span>
+        <span class="label">My Profile</span>
+      </a>
+
+      <a class="nav-item" data-load="#">
+        <span class="icon">📍</span>
+        <span class="label">My Status</span>
+      </a>
+
+      <a class="nav-item" data-load="#">
+        <span class="icon">🔔</span>
+        <span class="label">Announcements</span>
+      </a>
+
+      <a class="nav-item" data-load="#">
+        <span class="icon">🕘</span>
+        <span class="label">Status History</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="profile">
+        <div class="avatar"></div>
+        <div class="meta">
+          <div class="name"></div>
+          <div class="id"></div>
+        </div>
+      </div>
+      <button class="logout" id="logoutBtn">Logout</button>
+    </div>
+  </aside>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarNav = document.getElementById('sidebarNav');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Get the logout button element
+    const logoutBtn = document.getElementById('logoutBtn'); // Added ID to button for easier selection
+
+    // --- Sidebar Toggle Logic ---
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth > 900) return;
+      if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // --- Active State Switching Logic (from previous step) ---
+    sidebarNav.addEventListener('click', (e) => {
+      const clickedItem = e.target.closest('.nav-item');
+      if (clickedItem) {
+        navItems.forEach(item => {
+          item.classList.remove('active');
+        });
+        clickedItem.classList.add('active');
+      }
+    });
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('user');
+            window.location.href = '/frontend/LogInSignUp/login.html'; 
+        });
+    }
+  </script>
+</body>
+</html>

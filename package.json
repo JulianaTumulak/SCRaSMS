@@ -1,0 +1,17 @@
+{
+  "name": "scrasms",
+  "version": "1.0.0",
+  "description": "1. Created the backend, and the front end folders\r 2. Open terminal and navigate to backend\r     cd backend\r 3. Create virtual environment\r     python -m venv .venv\r     .venv\\Scripts\\activate\r     (.venv) C:\\path\\backend>   --this means that the environment is active\r 4. Install flask framework\r     pip install flask psycopg2-binary flask-cors\r     pip freeze > requirements.txt\r 5. Create the database and tables.",
+  "main": "index.js",
+  "scripts": {
+  "backend": "cd backend && .venv\\Scripts\\activate && python app.py",
+  "frontend": "live-server frontend --port=5500",
+  "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

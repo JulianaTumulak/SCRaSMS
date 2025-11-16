@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create account — Student Calamity Response</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+
+  <style>
+    /* widen container for two-column layout */
+    .container.signup { max-width: 980px; padding: 28px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+    .right-col { background: transparent; }
+
+    .form-group { margin-bottom: 14px; }
+    .hidden { display: none; }
+
+    /* make plain inputs look like .input from login.css */
+    .form-group input, .form-group select {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--input-border); background: #fff; box-sizing: border-box; font-size: 15px;
+    }
+
+    /* account column: align credentials vertically */
+    .account-box { background: var(--card); padding: 18px; border-radius: 12px; box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04); }
+
+    @media (max-width: 900px) {
+      .container.signup { max-width: 520px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .right-col { order: 2; }
+      .left-col { order: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container signup">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+      <a href="login.html" style="color:var(--muted); text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="#6b7280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to sign in
+      </a>
+    </div>
+
+    <h1 style="margin-top:6px">Create your account</h1>
+
+    <form method="post" id="signupForm" novalidate>
+
+      <!-- ACCOUNT TYPE -->
+      <label for="role">Account Type</label>
+      <div class="input selectable">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#9aa4b2">
+          <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.97 0-9 2.24-9 5v1h18v-1c0-2.76-4.03-5-9-5z"/>
+        </svg>
+
+        <select id="role" name="role" required style="display:none">
+          <option value="student" selected>Student</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <div class="custom-select" data-target="role" tabindex="0">
+          <div class="selected">Student</div>
+          <ul class="options" aria-hidden="true">
+            <li data-value="student">Student</li>
+            <li data-value="admin">Admin</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid: left = personal fields, right = account credentials -->
+      <div class="form-grid">
+        <div class="left-col">
+
+          <!-- STUDENT FIELDS -->
+          <div id="studentFields">
+            <div class="form-group">
+              <label>Student ID Number</label>
+              <input type="text" name="stud_idnum" placeholder="e.g., 21-12345" required>
+            </div>
+
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" name="stud_fname" required>
+            </div>
+
+            <div class="form-group">
+              <label>Middle Name</label>
+              <input type="text" name="stud_mname">
+            </div>
+
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" name="stud_lname" required>
+            </div>
+
+            <div class="form-group">
+              <label>Program</label>
+              <select name="stud_program" required>
+                <option value="">Select Program</option>
+                <option value="BSIT">BSIT</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BIT-CT">BIT-CT</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>College</label>
+              <select name="stud_college" required>
+                <option value="">Select College</option>
+                <option value="CCICT">CCICT</option>
+                <option value="CME">CME</option>
+                <option value="COT">COT</option>
+                <option value="CAS">CAS</option>
+                <option value="COE">COE</option>
+                <option value="COEd">COEd</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Year Level</label>
+              <select name="stud_year" required>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Classification</label>
+              <select name="stud_status" required>
+                <option value="True">Regular</option>
+                <option value="False">Irregular</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ADMIN FIELDS -->
+          <div id="adminFields" class="hidden">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" name="admin_fname">
+            </div>
+
+            <div class="form-group">
+              <label>Middle Name</label>
+              <input type="text" name="admin_mname">
+            </div>
+
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" name="admin_lname">
+            </div>
+
+            <div class="form-group">
+              <label>Contact Number</label>
+              <input type="text" name="admin_contact">
+            </div>
+          </div>
+        </div>
+
+        <!-- right column: account credentials -->
+        <div class="right-col">
+          <div class="account-box">
+            <!-- EMAIL -->
+            <label for="email">Email</label>
+            <div class="form-group">
+              <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+
+            <!-- PASSWORD -->
+            <label for="password">Password</label>
+            <div class="form-group">
+              <input id="password" name="password" type="password" minlength="8" placeholder="Min. 8 characters" required>
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <label for="confirm">Confirm Password</label>
+            <div class="form-group">
+              <input id="confirm" name="confirm" type="password" minlength="8" placeholder="Re-enter password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Create account</button>
+            <p class="small">Already have an account? <a href="login.html">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- CUSTOM SELECT + ROLE SWITCHING -->
+  <script>
+    function initCustomSelect(el) {
+      const target = el.dataset.target;
+      const native = document.getElementById(target);
+      const selected = el.querySelector('.selected');
+      const options = el.querySelector('.options');
+
+      el.addEventListener('click', () => {
+        el.classList.toggle('open');
+        options.setAttribute('aria-hidden', String(!el.classList.contains('open')));
+      });
+
+      options.addEventListener('click', (e) => {
+        const li = e.target.closest('li');
+        if (!li) return;
+        const value = li.dataset.value;
+
+        selected.textContent = li.textContent.trim();
+        native.value = value;
+
+        el.classList.remove('open');
+        options.setAttribute('aria-hidden', "true");
+
+        toggleFields(value);
+      });
+    }
+
+    function toggleFields(role) {
+      const student = document.getElementById("studentFields");
+      const admin = document.getElementById("adminFields");
+
+      if (role === "student") {
+        student.classList.remove("hidden");
+        admin.classList.add("hidden");
+      } else {
+        admin.classList.remove("hidden");
+        student.classList.add("hidden");
+      }
+    }
+
+    document.querySelectorAll('.custom-select').forEach(initCustomSelect);
+
+    // Default = student
+    toggleFields("student");
+  </script>
+  <script src="signUp.js"></script>
+</body>
+</html>
