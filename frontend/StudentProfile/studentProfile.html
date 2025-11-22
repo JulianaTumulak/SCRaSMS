@@ -13,6 +13,7 @@
     <div id="sidebar-container"></div>
 
     <main class="main">
+      <div class="page-wrap">
       <header class="page-header profile-header">
         <div>
           <h1>My Profile</h1>
@@ -22,13 +23,13 @@
 
       <section class="profile-section">
         <div class="card info-card">
-          <div class="card-head"><span class="icon">🛡️</span><strong>Account Information</strong>
+          <div class="card-head"><span class="icon"></span><strong>Account Information</strong>
             <div class="hint muted">These fields are managed by the administration</div>
           </div>
           <div class="card-body two-col">
             <div>
               <label>Full Name</label>
-              <div class="value" id="fullName">Not set</div>
+              <div class="value" id="fullName"></div>
             </div>
             <div>
               <label>Student ID</label>
@@ -46,7 +47,7 @@
         </div>
 
         <div class="card info-card">
-          <div class="card-head"><span class="icon">📞</span><strong>Contact Information</strong>
+          <div class="card-head"><span class="icon"></span><strong>Contact Information</strong>
             <div class="hint muted">You can update these fields</div>
           </div>
           <div class="card-body two-col">
@@ -66,7 +67,7 @@
         </div>
 
         <div class="card info-card warning">
-          <div class="card-head"><span class="icon">⚠️</span><strong>Emergency Contact</strong>
+          <div class="card-head"><span class="icon"></span><strong>Emergency Contact</strong>
             <div class="hint muted">Person to contact in case of emergency</div>
           </div>
           <div class="card-body two-col">
@@ -84,47 +85,17 @@
         <div class="card large-card">
           <div class="center">
             <div class="avatar-large">👤</div>
-            <h3>Complete Your Profile</h3>
-            <p class="muted">Set up your profile to use the system</p>
-            <div style="margin-top:12px"><a class="primary btn" href="../StudentProfile/studentProfile.html">Set Up Profile</a></div>
+            <div class="meta">
+              <h3>Complete Your Profile</h3>
+              <p class="muted">Set up your profile to use the system</p>
+              <div style="margin-top:12px"><a id="setupProfileBtn" class="primary btn" href="/frontend/StudentProfile/profileSetupPopup.html">Set Up Profile</a></div>
+            </div>
           </div>
         </div>
       </section>
+      </div>
     </main>
   </div>
-
-  <script>
-    // load sidebar (same approach as dashboard)
-    fetch('../LogInSignUp/Dashboard/studentSideBar.html')
-      .then(r => r.text())
-      .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const sidebar = doc.querySelector('aside.sidebar');
-        if (sidebar) document.getElementById('sidebar-container').appendChild(sidebar);
-      })
-      .catch(()=>{});
-
-    // populate profile values from localStorage (placeholder until backend)
-    (function(){
-      const stored = (localStorage.getItem('SCRaSMS_user') && JSON.parse(localStorage.getItem('SCRaSMS_user'))) || {};
-      // mapping of keys to elements
-      const map = {
-        fullName: stored.fullName || stored.name || '',
-        studentId: stored.studentId || stored.id || '',
-        program: stored.program || '',
-        yearLevel: stored.yearLevel || '',
-        contactNumber: stored.contactNumber || stored.phone || '',
-        barangay: stored.barangay || '',
-        address: stored.address || '',
-        emName: stored.emName || '',
-        emNumber: stored.emNumber || ''
-      };
-      for(const k in map){
-        const el = document.getElementById(k);
-        if(el) el.textContent = map[k] || 'Not set';
-      }
-    })();
-  </script>
+  <script src="studentProfile.js" type="text/javascript"></script>
 </body>
 </html>

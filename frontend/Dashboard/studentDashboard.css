@@ -15,12 +15,16 @@ body{margin:0;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif;backgro
 
 .status-banner{display:flex;align-items:center;gap:18px;background:#eafaf0;border:1px solid #dff3e6;padding:18px;border-radius:12px;margin-top:16px}
 .status-icon{font-size:28px;background:#22c55e;color:white;padding:12px;border-radius:10px}
-.status-text h3{margin:0;font-size:18px}
+.status-text h3{margin:0;font-size:1.25rem}
 .status-text p{margin:4px 0 0;color:var(--muted)}
 
 .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:20px}
+/* Enforce Poppins font across this stylesheet */
+html, body, * {
+  font-family: 'Poppins', sans-serif !important;
+}
 .card{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(12,23,42,0.04)}
-.card h4{margin:0 0 8px 0}
+.card h4{margin:0 0 8px 0; font-size: 1.2rem}
 .card .muted{color:var(--muted);font-size:13px}
 .card-action{margin-top:14px}
 .outline{background:#fff;border:1px solid #e6edf3;padding:8px 12px;border-radius:8px;cursor:pointer}

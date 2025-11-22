@@ -75,6 +75,7 @@
     fetch("SideBar/studentSideBar.html")
       .then(res => res.text())
       .then(html => {
+        console.debug('Main.html: fetched sidebar fragment', html);
         // Inject sidebar HTML into container
         const container = document.getElementById("sidebar-container");
         container.innerHTML = html;
@@ -170,13 +171,41 @@
     // Load page content helper
     function loadPage(page) {
       fetch(page)
-        .then(res => {
+          .then(res => {
           if (!res.ok) throw new Error(`Failed to load page: ${res.status} ${res.statusText} for ${page}`);
           return res.text();
         })
-        .then(htmlText => {
+          .then(htmlText => {
+            console.debug('Main.html: fetched page', page);
+            console.debug(htmlText);
           const parser = new DOMParser();
           const doc = parser.parseFromString(htmlText, 'text/html');
+          // Resolve asset URLs inside the fetched fragment so relative paths work
+          const baseUrl = new URL(page, location.href).href;
+
+          // Normalize stylesheet hrefs and append them to document.head
+          const fragStyles = doc.querySelectorAll('link[rel="stylesheet"]');
+          fragStyles.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href) return;
+            // If href is relative, resolve against page URL
+            const resolved = /^(https?:|\/)/.test(href) ? href : new URL(href, baseUrl).href;
+            const newLink = document.createElement('link');
+            newLink.rel = 'stylesheet';
+            newLink.href = resolved;
+            document.head.appendChild(newLink);
+          });
+
+          // Resolve script src attributes so they load from correct paths
+          const scripts = doc.querySelectorAll('script');
+          scripts.forEach(s => {
+            const src = s.getAttribute('src');
+            if (src && !/^(https?:|\/)/.test(src)) {
+              s.src = new URL(src, baseUrl).href;
+            }
+          });
+
+          // Extract the preferred wrapper (keeps inner padding/structure)
           const preferred = doc.querySelector('main') || doc.querySelector('#content') || doc.querySelector('.main') || doc.body;
           const fragment = preferred ? preferred.innerHTML : htmlText;
           const target = document.getElementById('content');
@@ -186,7 +215,7 @@
             if(window.__setActiveNavByPath) window.__setActiveNavByPath(page);
           } catch(e) {}
 
-          const scripts = doc.querySelectorAll('script');
+          // Execute scripts (external scripts will load using resolved src)
           scripts.forEach(oldScript => {
             const s = document.createElement('script');
             if(oldScript.src) s.src = oldScript.src;

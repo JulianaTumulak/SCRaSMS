@@ -7,6 +7,11 @@
 		--input-border:#e6edf3;
 		--radius:14px;
 	}
+	
+		/* Enforce Poppins font across this stylesheet */
+		html, body, * {
+		  font-family: 'Poppins', sans-serif !important;
+		}
 	html,body{height:100%;}
 	body{
 		margin:0;

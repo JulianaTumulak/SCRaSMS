@@ -23,6 +23,11 @@ body{margin:0;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif;backgro
 .meta .id{font-size:12px;color:var(--muted)}
 .logout{background:#fff;border:1px solid #e6edf3;padding:8px;border-radius:8px;cursor:pointer}
 
+/* Enforce Poppins font across this stylesheet */
+html, body, * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
 /* small screens: collapse sidebar */
 @media (max-width:900px){
   .sidebar{position:fixed;left:-320px;transition:left .22s ease;width:260px;z-index:40}

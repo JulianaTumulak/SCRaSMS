@@ -1,6 +1,8 @@
 document.querySelector('form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  localStorage.setItem('user', JSON.stringify({ id: 4, email: 'test@example.com', role: 'student' }));
+
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 

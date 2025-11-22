@@ -4,29 +4,87 @@
   --muted:#6b7280;
   --primary:#071029;
   --accent:#0b6ef6;
+  --surface-shadow: 0 6px 18px rgba(12,23,42,0.06);
+  --radius:12px;
+  --max-width:1100px;
 }
+
 *{box-sizing:border-box}
-body{margin:0;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--primary)}
+
+/* Base typography */
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--primary);line-height:1.45}
+/* Enforce Poppins */
+html, body, * { font-family: 'Poppins', sans-serif !important; }
+
 .main{margin-left:260px;padding:28px 34px;flex:1;min-height:100vh}
-.profile-header h1{margin:0;font-size:28px}
-.profile-header .muted{color:var(--muted);margin-top:6px}
+
+/* Centered content wrapper so pages look consistent */
+.page-wrap{max-width:var(--max-width);margin:0 auto}
+
+.profile-header h1{margin:0;font-size:1.6rem;font-weight:700}
+.profile-header .muted{color:var(--muted);margin-top:6px;font-size:0.95rem}
+
 .profile-section{display:flex;flex-direction:column;gap:18px;margin-top:18px}
-.card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(12,23,42,0.04)}
+
+.card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--surface-shadow)}
+
 .info-card .card-head{display:flex;flex-direction:column;gap:6px;padding-bottom:8px;border-bottom:1px solid #f0f3f6;margin-bottom:12px}
 .card-head .icon{font-size:18px}
-.card-body.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card-body label{font-size:13px;color:var(--muted);margin-bottom:6px}
-.card-body .value{font-weight:600;margin-top:6px}
-.hint{font-size:13px;color:var(--muted)}
-.warning{background:linear-gradient(180deg,#fff7f0,#fff8f2)}
-.large-card{width:100%;padding:28px;display:flex;align-items:center;justify-content:center}
-.large-card .avatar-large{font-size:40px;background:#f0f6ff;width:84px;height:84px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
-.center{text-align:center}
-.primary.btn{background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;display:inline-block}
 
-/* responsive */
+/* Emphasize card headings for clarity */
+.info-card .card-head{gap:8px;padding-bottom:10px;margin-bottom:14px}
+.info-card .card-head strong{font-size:1.2rem;font-weight:700;color:var(--primary);letter-spacing:0.2px}
+.info-card .card-head .hint{font-size:0.95rem;color:var(--muted);margin-top:2px}
+
+.card-body.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card-body label{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:6px}
+.card-body .value{font-weight:600;margin-top:6px;font-size:1rem;color:var(--primary)}
+
+.hint{font-size:0.9rem;color:var(--muted)}
+
+.warning{background:linear-gradient(180deg,#fff7f0,#fff8f2)}
+
+.large-card{width:100%;padding:28px;display:flex;align-items:center;justify-content:center}
+
+/* Layout the large-card with icon to the left and content to the right on wide screens */
+.large-card .center{display:flex;align-items:center;gap:28px;justify-content:center;text-align:left;width:100%;max-width:980px;margin:0 auto}
+.large-card .avatar-large{font-size:28px;background:#f0f6ff;width:110px;height:110px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0;flex:0 0 110px}
+.large-card .center h3{margin:0;font-size:1.25rem;font-weight:700}
+.large-card .center p.muted{margin:6px 0 0;color:var(--muted)}
+
+/* Meta column to stack headline, subtext and button vertically */
+.large-card .center > .meta{display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center}
+.large-card .center > .meta h3{margin:0}
+.large-card .center > .meta p.muted{margin:0;color:var(--muted)}
+.large-card .center > .meta .primary.btn{margin-top:6px}
+.center{text-align:left}
+
+.primary.btn{background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:600}
+
+/* Make value boxes clearer */
+.value{background:transparent;padding:8px 10px;border-radius:8px}
+
+/* Responsive adjustments */
+@media (max-width:1100px){
+  .card-body.two-col{grid-template-columns:1fr 1fr}
+}
 @media (max-width:900px){
   .main{margin-left:0;padding:18px}
-  .profile-section{grid-template-columns:1fr}
+  .page-wrap{padding:0}
+  .card-body.two-col{grid-template-columns:1fr}
   .large-card{padding:20px}
+  .large-card .avatar-large{width:84px;height:84px}
+  .large-card .center{flex-direction:column;align-items:center;text-align:center;gap:12px}
+  .large-card .center > .meta{align-items:center}
 }
+
+/* Small tweaks for mobile readability */
+@media (max-width:480px){
+  .profile-header h1{font-size:1.25rem}
+  .card{padding:16px}
+}
+
+/* Utility: ensure links inside cards are clear */
+.card a.primary{margin-top:8px}
+

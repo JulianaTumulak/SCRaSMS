@@ -86,3 +86,143 @@ def login():
         return jsonify({"message": "Login successful", "user": user})
     else:
         return jsonify({"error": "Invalid email or password"}), 401
+    
+@student_bp.route('/get_profile', methods=["GET"])
+def get_profile():
+    acc_id = request.args.get('acc_id')
+    # email = request.args.get('email')
+
+    conn = get_student_connection()
+    cur = conn.cursor()
+
+    # Now fetch profile using acc_id
+    cur.execute("""
+        SELECT 
+            STUD_ID_NUMBER, 
+            STUD_FNAME,
+            STUD_LNAME,
+            STUD_MNAME,
+            STUD_PROGRAM,
+            STUD_COLLEGE,
+            STUD_YEAR,
+            STUD_isIRREGULAR,
+            STUD_EMAIL
+        FROM STUDENT
+        WHERE ACC_ID = %s
+    """, (acc_id,))
+
+    result = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if not result:
+        return jsonify({"error": "Profile not found"}), 404
+    
+    profile = {
+        "stud_idnum": result[0],
+        "stud_fname": result[1],
+        "stud_lname": result[2],
+        "stud_mname": result[3],
+        "stud_program": result[4],
+        "stud_college": result[5],
+        "stud_yearlevel": result[6],
+        "stud_status": result[7],
+        "stud_email": result[8]
+    }
+
+    return jsonify({"profile": profile})
+
+
+@student_bp.route('/update_profile', methods=["POST"])
+def update_profile():
+    # Expect JSON payload with acc_id and fields to update
+    data = request.json or {}
+    acc_id = data.get('acc_id') or request.args.get('acc_id')
+    if not acc_id:
+        return jsonify({"error": "acc_id is required"}), 400
+
+    # Map incoming field names to DB columns
+    contact = data.get('contactNumber')
+    barangay = data.get('barangay')
+    address = data.get('address')
+    em_name = data.get('emName')
+    em_num = data.get('emNumber')
+
+    conn = get_student_connection()
+    cur = conn.cursor()
+
+    # Update only the provided fields
+    update_parts = []
+    params = []
+    if contact is not None:
+        update_parts.append('STUD_CONTACT_NUMBER = %s')
+        params.append(contact)
+    if barangay is not None:
+        update_parts.append('STUD_BARANGAY = %s')
+        params.append(barangay)
+    if address is not None:
+        update_parts.append('STUD_ADDRESS = %s')
+        params.append(address)
+    if em_name is not None:
+        update_parts.append('STUD_EMERG_CONTACT_NAME = %s')
+        params.append(em_name)
+    if em_num is not None:
+        update_parts.append('STUD_EMERG_CONTACT_NUM = %s')
+        params.append(em_num)
+
+    if update_parts:
+        sql = f"UPDATE STUDENT SET {', '.join(update_parts)} WHERE ACC_ID = %s"
+        params.append(acc_id)
+        cur.execute(sql, tuple(params))
+        conn.commit()
+
+    # Return the updated profile (same shape as get_profile)
+    cur.execute("""
+        SELECT 
+            STUD_ID_NUMBER, 
+            STUD_FNAME,
+            STUD_LNAME,
+            STUD_MNAME,
+            STUD_PROGRAM,
+            STUD_COLLEGE,
+            STUD_YEAR,
+            STUD_isIRREGULAR,
+            STUD_EMAIL,
+            STUD_CONTACT_NUMBER,
+            STUD_BARANGAY,
+            STUD_ADDRESS,
+            STUD_EMERG_CONTACT_NAME,
+            STUD_EMERG_CONTACT_NUM
+        FROM STUDENT
+        WHERE ACC_ID = %s
+    """, (acc_id,))
+
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not result:
+        return jsonify({"error": "Profile not found"}), 404
+
+    profile = {
+        "stud_idnum": result[0],
+        "stud_fname": result[1],
+        "stud_lname": result[2],
+        "stud_mname": result[3],
+        "stud_program": result[4],
+        "stud_college": result[5],
+        "stud_yearlevel": result[6],
+        "stud_status": result[7],
+        "stud_email": result[8],
+        "stud_contact": result[9],
+        "stud_barangay": result[10],
+        "stud_address": result[11],
+        "em_name": result[12],
+        "em_phone": result[13]
+    }
+
+    return jsonify({"message": "Profile updated", "profile": profile})
+
+
+
