@@ -1,0 +1,51 @@
+:root{
+  /* Colors (vivid theme) */
+  --bg: #f5f9ff;
+  --card: #ffffff;
+  --muted: #475569;
+  --text: #071029;
+  --accent: #0066ff;
+  --accent-2: #00b3ff;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --surface-border: rgba(2,6,23,0.06);
+  --radius: 12px;
+  --shadow-1: 0 6px 18px rgba(2,6,23,0.06);
+  --glass: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+}
+
+/* Typography (base on dashboard) */
+html{font-size:16px}
+body{margin:0;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+h1{font-size:28px;margin:0}
+h2{font-size:22px;margin:0}
+h3{font-size:18px;margin:0}
+p{margin:0}
+
+/* Buttons */
+.btn, .primary, .btn-primary { background: linear-gradient(180deg,var(--accent), var(--accent-2)); color:#fff; border:0; padding:10px 16px; border-radius:10px; cursor:pointer; }
+.outline{background:transparent;border:1px solid rgba(2,6,23,0.06);padding:8px 12px;border-radius:8px}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-1);border:1px solid rgba(2,6,23,0.04)}
+
+/* Utilities */
+.muted{color:var(--muted)}
+.center{text-align:center}
+
+/* Ensure Poppins across the app */
+html, body, * { font-family: 'Poppins', sans-serif !important; }
+
+/* Layout shared across pages */
+.app{display:flex;min-height:100vh}
+.main{margin-left:260px;padding:28px 34px;flex:1;min-height:100vh}
+.page-header{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.page-header h1{font-size:28px}
+.page-wrap{max-width:1100px;margin:0 auto}
+
+/* Responsive: collapse left margin when sidebar becomes overlay */
+@media (max-width:900px){
+  .main{margin-left:0;padding:18px}
+  .page-header h1{font-size:20px}
+}

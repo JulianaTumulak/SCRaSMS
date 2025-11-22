@@ -1,0 +1,52 @@
+.history-wrap {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
+
+.history-list {
+  display: grid;
+  gap: 16px;
+}
+
+.history-card {
+  background: #fff;
+  border: 1px solid #e8eef2;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.history-card .meta {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.history-card .title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.empty-state {
+  max-width: 980px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-card {
+  width: 100%;
+  border-radius: 10px;
+  padding: 40px 24px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #e9eef3;
+}
+
+.empty-icon { font-size: 36px; margin-bottom: 12px; color: #6b7280; }
+
+@media (max-width: 700px) {
+  .history-wrap { padding: 0 12px; }
+}

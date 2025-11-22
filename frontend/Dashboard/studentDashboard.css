@@ -1,10 +1,4 @@
-:root{
-  --bg:#f6f8fa;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --primary:#071029;
-  --accent:#0b6ef6;
-}
+:root{ /* variables defined in styles/theme.css */ }
 *{box-sizing:border-box}
 body{margin:0;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--primary)}
 .main{margin-left:260px;padding:28px 34px;flex:1;min-height:100vh}

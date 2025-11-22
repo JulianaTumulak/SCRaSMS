@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Announcements — SCrSMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/theme.css">
+  <link rel="stylesheet" href="../SideBar/studentSideBar.css">
+  <link rel="stylesheet" href="studentAnnouncement.css">
+</head>
+<body>
+  <div class="app">
+    <div id="sidebar-container"></div>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <h1>Announcements</h1>
+          <p class="muted">Latest notices and updates from the administration</p>
+        </div>
+        <div class="actions">
+          <button id="refreshBtn" class="outline">Refresh</button>
+        </div>
+      </header>
+
+      <section class="announcements">
+        <div class="ann-toolbar">
+          <input id="searchInput" class="search" type="search" placeholder="Search announcements" />
+          <select id="typeFilter" class="filter">
+            <option value="">All Types</option>
+            <option value="General">General</option>
+            <option value="Typhoon">Typhoon</option>
+            <option value="Earthquake">Earthquake</option>
+            <option value="Flood">Flood</option>
+            <option value="Fire">Fire</option>
+            <option value="Landslide">Landslide</option>
+          </select>
+          <select id="severityFilter" class="filter">
+            <option value="">All Severity</option>
+            <option value="Info">Info</option>
+            <option value="Warning">Warning</option>
+            <option value="Critical">Critical</option>
+            <option value="Critical">High</option>
+            <option value="Critical">Medium</option>
+            <option value="Critical">Low</option>
+          </select>
+        </div>
+
+        <div id="annList" class="ann-list">
+          <!-- announcements injected here -->
+        </div>
+
+        <div id="emptyState" class="empty-state" hidden>
+          <div class="empty-card">
+            <div class="empty-icon">📣</div>
+            <h3>No Announcements Found</h3>
+            <p class="muted">There are no announcements at the moment</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="studentAnnouncement.js" type="text/javascript"></script>
+</body>
+</html>

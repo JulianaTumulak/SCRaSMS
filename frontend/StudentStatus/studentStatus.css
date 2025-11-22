@@ -1,15 +1,4 @@
-:root{
-  --bg:#f6f8fa;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --primary:#071029;
-  --accent:#0b6ef6;
-  --radius:12px;
-  --green:#16a34a;
-  --yellow:#f59e0b;
-  --orange:#f97316;
-  --red:#ef4444;
-}
+:root{ /* variables defined in styles/theme.css */ }
 
 *{box-sizing:border-box}
 html,body{height:100%}
