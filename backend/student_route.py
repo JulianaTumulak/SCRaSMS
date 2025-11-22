@@ -1,5 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from database import get_student_connection
+import os
+from werkzeug.utils import secure_filename
+from datetime import datetime
 
 student_bp = Blueprint('student_bp', __name__)
 
@@ -223,6 +226,92 @@ def update_profile():
     }
 
     return jsonify({"message": "Profile updated", "profile": profile})
+
+@student_bp.route('/resolve_student', methods=['POST'])
+def resolve_student():
+    """Given an ACC_ID, return the corresponding STUD_ID from STUDENT table."""
+    data = request.get_json(silent=True) or {}
+    acc_id = data.get('acc_id') or request.form.get('acc_id')
+    if not acc_id:
+        return jsonify({"error": "acc_id is required"}), 400
+
+    conn = get_student_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT STUD_ID FROM STUDENT WHERE ACC_ID = %s
+    """, (acc_id,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return jsonify({"error": "Student not found for provided acc_id"}), 404
+    stud_id = row[0]
+    return jsonify({"stud_id": stud_id})
+
+
+@student_bp.route('/submit_status_by_student', methods=['POST'])
+def submit_status_by_student():
+    """Accepts stud_id (or JSON) and inserts a STUDENT_STATUS record keyed by STUD_ID."""
+    conn = get_student_connection()
+    cur = conn.cursor()
+
+    # Support both multipart/form-data (FormData) and JSON
+    if request.content_type and request.content_type.startswith('multipart/form-data'):
+        form = request.form
+        files = request.files
+        stud_id = form.get('stud_id')
+        status = form.get('status')
+        notes = form.get('notes')
+        photo_file = files.get('photo')
+    else:
+        data = request.get_json(silent=True) or {}
+        stud_id = data.get('stud_id')
+        status = data.get('status')
+        notes = data.get('notes')
+        photo_file = None
+
+    if not stud_id or not status:
+        return jsonify({"error": "stud_id and status are required"}), 400
+
+    photo_path = None
+    if photo_file:
+        upload_dir = os.path.join(os.getcwd(), 'backend', 'uploads', 'status_photos')
+        os.makedirs(upload_dir, exist_ok=True)
+        filename = secure_filename(photo_file.filename)
+        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        filename_on_disk = f"s{stud_id}_{timestamp}_{filename}"
+        full_path = os.path.join(upload_dir, filename_on_disk)
+        photo_file.save(full_path)
+        photo_path = os.path.relpath(full_path, os.getcwd())
+
+    created_at = datetime.utcnow()
+    try:
+        # Mark any previous status entries for this student as not recent
+        cur.execute("""
+            UPDATE STATUS SET STAT_ISRECENT = FALSE
+            WHERE STUD_ID = %s AND COALESCE(STAT_ISRECENT, FALSE) = TRUE
+        """, (stud_id,))
+
+        # Insert the new status row, mark it as recent
+        cur.execute("""
+            INSERT INTO STATUS (STUD_ID, STAT_TYPE, STAT_NOTES, STAT_PHOTO, STAT_CREATED_AT, STAT_ISRECENT)
+                VALUES (%s, %s, %s, %s, %s, TRUE)
+            RETURNING STUD_ID
+        """, (stud_id, status, notes, photo_path, created_at))
+
+        new_id = cur.fetchone()[0]
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        cur.close()
+        conn.close()
+        current_app.logger.exception('Failed to insert student status')
+        return jsonify({"error": "Database error", "detail": str(e)}), 500
+
+    cur.close()
+    conn.close()
+
+    return jsonify({"message": "Student Status submitted successfully", "id": new_id}), 201
 
 
 
